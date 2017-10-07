@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Rock Paper Scissors!</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400' rel='stylesheet' type='text/css'>
+
+<style>
+body {
+	color: #FFF;
+	opacity: 0;
+	background-color: #28b4e5;	
+	transition: all ease-in-out 400ms
+}
+
+h2, p {
+    font-family: "Roboto Slab", arvo, "Trebuchet MS";
+	font-weight: 300;
+	font-size: 45px;
+}
+
+.container {
+	width: 750px;
+	height: 400px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -200px;
+	margin-left: -375px;
+}
+
+.choose {
+	position: relative;
+	width: 400px; height: 200px;
+}
+
+.choose img {
+	width: 65px;
+	margin-left: 5px; marign-right: 5px;
+}
+
+.computer p {
+	position: relative;
+}
+
+.computer img {
+	width: 50px;
+}
+	
+</style>
+
+</head>
+
+<body>
+
+<div class="container" align="center">
+    <div class="choose" align="center">
+        <h2 style="position:relative;top:20px;">Choose your color</h2>
+        <a href="play red.html"><img src="Images/Colors/Red.png"></a>
+        <a href="play yellow.html"><img src="Images/Colors/Yellow.png"></a>
+        <a href="play green.html"><img src="Images/Colors/Green.png"></a>
+        <a href="play blue.html"><img src="Images/Colors/Blue.png"></a>
+    </div>
+    
+    <div class="computer">
+        <p style="font-size: 25px;">Opponent:</p><img src="Images/Colors/Orange.png"></img>
+    </div>
+</div>
+
+<script>
+//page transition in
+$(document).ready(function() {
+	setTimeout(function(){
+		$('body').css({'opacity':'1'});
+	}, 200);
+})
+</script>
+</body>
+</html>

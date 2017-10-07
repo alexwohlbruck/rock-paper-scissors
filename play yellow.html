@@ -1,0 +1,396 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Rock Paper Scissors!</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400' rel='stylesheet' type='text/css'>
+
+<style>
+body {
+    opacity: 0;
+    background-color: #28b4e5;
+    overflow: hidden;
+    color: #FFF;
+    transition: all ease-in-out 400ms;
+}
+
+.score {
+    width: 100%;
+    height: 200px;
+    margin-top: 0px;
+    margin-left: 0px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all ease-in-out 1000ms;
+}
+
+.you {
+    float:left;
+    margin-top: 10px;
+    margin-left: 40px;
+    width: auto;
+    height: auto;
+    position: relative;
+    left: 0%;
+    top: auto;
+    transition: all ease-in-out 1000ms;
+}
+
+.computer {
+    float:right;
+    margin-top: 10px;
+    margin-right: 40px;
+    width: auto;
+    height: auto;
+    position: relative;
+    right: 0%;
+    top: auto;
+    transition: all ease-in-out 1000ms;
+}
+
+#txtyou, #txtopponent {
+    font-family: "Roboto Slab", arvo, "Trebuchet MS";
+    font-weight: 300;
+    font-size: 19pt;
+    transition: all ease-in-out 1000ms;
+}
+
+.choose {
+    width: 750px;
+    height: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -200px;
+    margin-left: -375px;
+    transition: all ease-in-out 1000ms;
+}
+
+#question {
+    font-family: "Roboto Slab", arvo, "Trebuchet MS";
+    font-weight: 300;
+    font-size: 30pt;
+    transition: all ease-in-out 1000ms, opacity ease-in-out 200ms;
+}
+
+#rock, #paper, #scissors {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 150px;
+    transition: all ease-in-out 1000ms;
+    opacity: 1;
+    position: absolute;
+}
+
+#rock {
+    right: 459px;
+}
+
+.selected {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 150px;
+    opacity: 1;
+    position: relative;
+    transition: all ease-in-out 150ms;
+    opacity: 0;
+}
+
+.score img {
+    position: relative;
+    top: 12px;
+    width: 40px;
+    transition: all ease-in-out 1000ms;
+}
+
+#color {
+    position: relative;
+    opacity: 0;
+    transition: all ease-in-out 200ms;
+}
+
+.links {
+    text-align: center;
+}
+
+#again, #quit {
+    opacity: 0;
+    visibility: hidden;
+    font-family: "Roboto Slab", "Trebuchet MS", serif;
+    font-weight: 300;
+    font-size: 35px;
+    text-decoration: none;
+    color: #FFF;
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+    transition: all ease-in-out 1000ms;
+}
+
+#again {
+    top: calc(50% + 150px); top: -moz-calc(50% + 150px); top: -webkit-calc(50% + 150px); top: -o-calc(50% + 150px);
+}
+
+#quit {
+    top: calc(50% + 202px); top: -moz-calc(50% + 202px); top: -webkit-calc(50% + 202px); top: -o-calc(50% + 202px);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="score">
+    <div class="you" id="divyou">
+        <h5 id="txtyou" style="display:inline;margin-right:10px;">You</h5>
+        <img src="Images/Colors/Transparent.png" id="you" style="position: absolute;"><img src="Images/Colors/.png" id="color">
+        <img src="Images/Colors/Transparent.png" id="you" style="position: absolute;"><img src="Images/Colors/.png" id="color">
+        <img src="Images/Colors/Transparent.png" id="you" style="position: absolute;"><img src="Images/Colors/.png" id="color">
+    </div>
+    <div class="computer" id="divcoumputer">
+        <img src="Images/Colors/Transparent.png" id="computer" style="position: absolute;"><img src="Images/Colors/Orange Normal.png" id="color">
+        <img src="Images/Colors/Transparent.png" id="computer" style="position: absolute;"><img src="Images/Colors/Orange Normal.png" id="color">
+        <img src="Images/Colors/Transparent.png" id="computer" style="position: absolute;"><img src="Images/Colors/Orange Normal.png" id="color">
+        <h5 id="txtopponent" style="display:inline;margin-left:10px;">Opponent</h5>
+    </div>
+</div>
+
+<div class="choose" align="center">
+    <div class="container">
+        <h2 id="question">Rock, paper, or scissors?</h2>
+    </div>
+
+    <img src="Images/Rock.png" id="rock" onclick="rockClick()">
+    <img src="Images/Result/ Rock.png" class="selected" id="rocksel" onclick="rockClick()">
+
+    <img src="Images/Paper.png" id="paper" onclick="paperClick()">
+    <img src="Images/Result/ Paper.png" class="selected" id="papersel" onclick="paperClick()">
+
+    <img src="Images/Scissors.png" id="scissors" onclick="scissorsClick()">
+    <img src="Images/Result/ Scissors.png"class="selected" id="scissorssel" onclick="scissorsClick()">
+</div>
+
+<div class="links">
+    <a href="#" id="again">Play again</a>
+    <a href="#" id="quit">Quit</a>
+</div>
+
+<script>
+
+    var computerChoice = null,
+        userChoice = null;
+        userScore = 0;
+        computerScore = 0;
+
+    //page transition in
+    $(document).ready(function() {
+        setTimeout(function(){
+            $('body').css({'opacity':'1'});
+        }, 200);
+    })
+
+    //konami code
+    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
+    $(document).keydown(function(e) {
+      kkeys.push( e.keyCode );
+      if ( kkeys.toString().indexOf( konami ) >= 0 ) {
+        $(document).unbind('keydown',arguments.callee);
+        window.location.href = "test.html";
+        $("body").addClass("konami");
+      }
+    });
+
+    //disable draggable images
+    $('img').on('dragstart', function(event) { event.preventDefault(); });
+
+    function rockClick() {
+        pauseClick();
+        $('#rocksel').css({'opacity':'1'});
+        userChoice = "rock";
+        newComputerChoice();
+        compare();
+        resetWinLose();
+        finish();
+    }
+    function paperClick() {
+        pauseClick();
+        $('#papersel').css({'opacity':'1'});
+        userChoice = "paper";
+        newComputerChoice();
+        compare();
+        resetWinLose();
+        finish();
+    }
+    function scissorsClick() {
+        pauseClick();
+        $('#scissorssel').css({'opacity':'1'});
+        userChoice = "scissors";
+        newComputerChoice();
+        compare();
+        resetWinLose();
+        finish();
+    }
+
+    function pauseClick() {
+        $('#rock, #paper, #scissors, .selected').attr('onclick','doNothing()');
+        setTimeout(function() {
+           $('#rock, #rocksel').attr('onclick','rockClick()');
+            $('#paper, #papersel').attr('onclick','paperClick()');
+            $('#scissors, #scissorssel').attr('onclick','scissorsClick()');
+       }, 2000);
+    }
+
+    //generate computerChoice
+    function newComputerChoice() {
+        computerChoice = Math.random();
+        //change randomly generated number to rock, paper, or scissors
+        if (computerChoice < 1/3) {
+            computerChoice = "rock";
+            if (computerChoice == userChoice) {
+                $('#rocksel').attr('src','Images/Result/Grey Rock.png');
+            } else {
+                $('#rocksel').attr('src','Images/Result/Orange Rock.png');
+            }
+            $('#rocksel').css({'opacity':'1'});
+
+        } else if (computerChoice < 2/3) {
+            computerChoice = "paper";
+            if (computerChoice == userChoice) {
+                ('#rocksel').attr('src','Images/Result/Grey Paper.png');
+            } else {
+                $('#papersel').attr('src','Images/Result/Orange Paper.png');
+            }
+            $('#papersel').css({'opacity':'1'});
+
+        } else {
+            computerChoice = "scissors";
+            if (computerChoice == userChoice) {
+                $('#scissorssel').attr('src','Images/Result/Grey Scissors.png');
+            } else {
+                $('#scissorssel').attr('src','Images/Result/Orange Scissors.png');
+            }
+            $('#scissorssel').css({'opacity':'1'});
+        };
+        console.log('computer choice: ', computerChoice);
+    }
+
+    //compare computerChoice with userChoice, decide who wins
+    function compare() {
+        console.log('user choice: ' + userChoice);
+        if (userChoice == computerChoice) {
+            changeToTie();
+        } else if (userChoice == "rock") {
+            if (computerChoice == "scissors") {
+                changeToYouWin();
+                $('.you #color:first').css({'opacity':'1'});
+                $('.you #color:first').attr('id','coloractive');
+                userScore = userScore + 1;
+            } else {
+                changeToYouLose();
+                $('.computer #color:last').css({'opacity':'1'});
+                $('.computer #color:last').attr('id','coloractive');
+                computerScore = computerScore + 1;
+            }
+        } else if (userChoice == "paper") {
+            if (computerChoice == "rock") {
+                changeToYouWin();
+                $('.you #color:first').css({'opacity':'1'});
+                $('.you #color:first').attr('id','coloractive');
+                userScore = userScore + 1;
+            } else {
+                changeToYouLose();
+                $('.computer #color:last').css({'opacity':'1'});
+                $('.computer #color:last').attr('id','coloractive');
+                computerScore = computerScore + 1;
+            }
+        } else if (userChoice == "scissors") {
+            if (computerChoice == "paper") {
+                changeToYouWin();
+                $('.you #color:first').css({'opacity':'1'});
+                $('.you #color:first').attr('id','coloractive');
+                userScore = userScore + 1;
+            } else {
+                changeToYouLose();
+                $('.computer #color:last').css({'opacity':'1'});
+                $('.computer #color:last').attr('id','coloractive');
+                computerScore = computerScore + 1;
+            }
+        }
+    }
+
+    function changeToYouWin() {
+        $('#question').css({'opacity':'0'}); //fade out text
+        setTimeout(function(){
+            $('#question').text('You win!'); //change to you win
+            $('#question').css({'opacity':'1'}); //fade in text
+        }, 200);
+    }
+    function changeToYouLose() {
+        $('#question').css({'opacity':'0'}); //fade out text
+        setTimeout(function(){
+            $('#question').text('You lose!'); //change to you win
+            $('#question').css({'opacity':'1'}); //fade in text
+        }, 200);
+    }
+    function changeToTie() {
+        $('#question').css({'opacity':'0'}); //fade out text
+        setTimeout(function(){
+            $('#question').text('Tie!'); //change to you win
+            $('#question').css({'opacity':'1'}); //fade in text
+        }, 200);
+    }
+
+    function resetWinLose() {
+        setTimeout(function() {
+            if (userScore < 3) {
+                if (computerScore < 3) {
+                    $('#question').css({'opacity':'0'}); //fade out text
+                    setTimeout(function(){
+                        $('#question').text('Rock, paper, or scissors?'); //change to you win
+                        $('#question').css({'opacity':'1'}); //fade in text
+                    }, 200);
+                }
+            }
+            $('#rocksel, #papersel, #scissorssel').css({'opacity':'0'});
+            $('#rocksel').css({'opacity':'0'}).attr('src','Images/Result/ Rock.png');
+            $('#papersel').css({'opacity':'0'}).attr('src','Images/Result/ Paper.png');
+            $('#scissorssel').css({'opacity':'0'}).attr('src','Images/Result/ Scissors.png');
+        }, 2000);
+    }
+
+    function finish() {
+        if (userScore > 2) {
+            setTimeout(function() {
+                animateFinish();
+            }, 2000);
+
+            
+        } else if (computerScore > 2) {
+            setTimeout(function() {
+                animateFinish();
+            }, 2000);
+        }
+    }
+
+    function animateFinish() {
+        $('#question').css({'font-size':'45pt'});
+        //remove rock paper and scissors:
+        $('#rock, #paper, #scissors, #rocksel, #papersel, #scissorssel').css({'display':'none'});
+        $('.score').css({'height':'200px','top':'42%','left':'35px'});
+        $('.you').css({'left':'calc(50% - 370px)'});
+        $('.computer').css({'right':'calc(50% - 370px)'});
+        $('.score img').css({'width':'59px'})
+        $('h5').css({'font-size':'25pt'});
+        $('#again, #quit').css({'opacity':'1','visibility':'visible'});
+        $('#again').attr('href','javascript:window.location.href=window.location.href');
+        $('#quit').attr('href','index.html');
+    }
+
+</script>
+</body>
+</html>
